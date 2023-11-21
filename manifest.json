@@ -3,7 +3,7 @@
     "version": "1.0",
     "manifest_version": 3,
     "description": "Saving timestamps of YouTube videos in bookmark",
-    "permissions": ["storage", "tabs"],
+    "permissions": ["storage", "tabs", "activeTab"],
     "host_permissions": ["https://*/*"],
     "background": {
       "service_worker": "background.js"

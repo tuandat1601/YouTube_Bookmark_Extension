@@ -2,14 +2,52 @@
 let bookmarkBtnAdded = false;
 let   videoInfo = {type:"",url:""}
 let listBookMark = []
-
-
+let acceptChange = 0;
+let currentUrl=''
+let timeseri =null
+let eventt=null
+document.addEventListener("click", function(event) {
+  eventt=event
+  timeseri = document.querySelectorAll('.video-stream')[0].currentTime
+  console.log(timeseri)
+  
+});
 chrome.runtime.onMessage.addListener((obj, sender, sendResponse) => {
-  const { type, value, videoId,previousurl } = obj;
+  const { type, value, videoId} = obj;
   videoInfo.type=type
   videoInfo.url=videoId
+  console.log(currentUrl)
+  
+ if (currentUrl===''||currentUrl==='https://www.youtube.com/'){
+  currentUrl = videoInfo.url
+ }
+ else {
+  console.log(currentUrl)
+ 
+ 
+  if (!currentUrl.includes("https://www.youtube.com/watch") && type==='NEW'){
+    currentUrl = videoInfo.url
+  }
+ 
+  else if (currentUrl.includes("https://www.youtube.com/watch") && type==='NEW'&&currentUrl!==videoInfo.url ){
+    console.log(currentUrl)
+  
+  if(!checkChangeTabs(timeseri)){
+    window.location.href = "#";
+  }else{  
 
-  console.log("web info",type, value, videoInfo.url,previousurl);
+  currentUrl = videoInfo.url
+}
+   
+  }
+  else if (currentUrl.includes("https://www.youtube.com/watch") && type==='NEW TAB'){
+
+    currentUrl = videoInfo.url
+    console.log(currentUrl)
+  }
+
+ }
+  console.log("web info",type, value, videoInfo.url);
 
   if (type === "NEW" && !bookmarkBtnAdded) {
     videoLoad();
@@ -26,6 +64,14 @@ const getListBookmarks = () => {
     });
   });
 };
+const checkChangeTabs = (timeseri)=>{
+  if (confirm("Bạn muốn rời video ở thòi gian "+ timeseri)) {
+    txt = "Đồng ý!";
+  } else {
+    txt = "Từ chối!";
+    return false;
+  }
+}
 const videoLoad = async ()=>{
   const bookmarkBtn = document.createElement("img");
   bookmarkBtn.src = chrome.runtime.getURL("assets/images/bookmark.png");
