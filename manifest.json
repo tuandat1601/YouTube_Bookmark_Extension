@@ -1,0 +1,48 @@
+{
+    "name": "YouTube Bookmarks",
+    "version": "1.0",
+    "manifest_version": 3,
+    "description": "Saving timestamps of YouTube videos in bookmark",
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://*/*"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*/*"],
+        "js": ["scripts/content-script.js"]
+      }
+    ],
+   
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "assets/images/bookmark.png",
+          "assets/images/play.png",
+          "assets/images/delete.png",
+          "assets/images/save.png"
+        ],
+        "matches": ["https://*/*"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.16.png",
+        "32": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.32.png",
+        "48": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.48.png",
+        "128": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.128.png"
+      },
+      "default_title": "YouTube Bookmarks",
+      "default_popup": "popup.html"
+    },
+    "icons":{
+        
+            "16": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.16.png",
+            "32": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.32.png",
+            "48": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.48.png",
+            "128": "assets/images/Chrisbanks2-Cold-Fusion-Hd-Youtube-3-tv.128.png"
+          
+    }
+
+  }
