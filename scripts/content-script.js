@@ -5,14 +5,57 @@ let listBookMark = []
 let acceptChange = 0;
 let currentUrl=''
 let timeseri =null
+
+
 let eventt=null
+
+
+  var modalOverlay = document.createElement('div');
+  modalOverlay.id = 'modalOverlay';
+  modalOverlay.style.cssText = 'display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 99;';
+ 
+  // Thêm phần tử vào body của trang
+  document.body.appendChild(modalOverlay);
+
+
+// Biến để theo dõi trạng thái của modal
+var isModalVisible = false;
+document.addEventListener("mousemove", function(event) {
+  eventt = event
+ })
 document.addEventListener("click", function(event) {
-  eventt=event
+  eventt = event
   timeseri = document.querySelectorAll('.video-stream')[0].currentTime
-  console.log(timeseri)
+  if (isModalVisible){
+    event.preventDefault();
+  }
+  if (event.target.id === 'confirmButton') {
+    
+    console.log('Người dùng đã xác nhận');
+
+
+    modalOverlay.style.display = 'none';
+    isModalVisible = false;
+}
+  if (event.target.id === 'cancelButton') {
+    event.preventDefault();
+    console.log('Người dùng không xác nhận');
+
+    
+    modalOverlay.style.display = 'none';
+    isModalVisible = false;
+}
   
 });
+ window.addEventListener('beforeunload', function (event) {
+      if (isModalVisible) {
+          event.preventDefault();
+          event.returnValue = '';
+      }
+    });
+    
 chrome.runtime.onMessage.addListener((obj, sender, sendResponse) => {
+  
   const { type, value, videoId} = obj;
   videoInfo.type=type
   videoInfo.url=videoId
@@ -30,14 +73,19 @@ chrome.runtime.onMessage.addListener((obj, sender, sendResponse) => {
   }
  
   else if (currentUrl.includes("https://www.youtube.com/watch") && type==='NEW'&&currentUrl!==videoInfo.url ){
+    modalOverlay.innerHTML = `
+     
+    <div style = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+ <p>Bạn có chắc chắn muốn rời khỏi video ${timeseri}?</p>
+     <button id="confirmButton">Xác nhận</button>
+     <button id="cancelButton">Hủy</button>
+   
+ </div>
+`;
+  isModalVisible = true;
+    
     console.log(currentUrl)
-  
-  if(!checkChangeTabs(timeseri)){
-    window.location.href = "#";
-  }else{  
-
-  currentUrl = videoInfo.url
-}
+    modalOverlay.style.display = 'block';
    
   }
   else if (currentUrl.includes("https://www.youtube.com/watch") && type==='NEW TAB'){
@@ -64,11 +112,10 @@ const getListBookmarks = () => {
     });
   });
 };
-const checkChangeTabs = (timeseri)=>{
-  if (confirm("Bạn muốn rời video ở thòi gian "+ timeseri)) {
-    txt = "Đồng ý!";
+function checkChangeTabs(timeseri){
+  if (confirm("Bạn muốn rời video ở thòi gian "+ timeseri)) { 
+    return true
   } else {
-    txt = "Từ chối!";
     return false;
   }
 }

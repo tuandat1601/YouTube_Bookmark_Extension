@@ -63,7 +63,6 @@ function isYouTubeUrl(url) {
 
  
 
-  
  
 chrome.tabs.onUpdated.addListener(handleTabUpdate);
 
