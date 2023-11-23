@@ -2,26 +2,45 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
+<style>
+
+</style>
 
 <body>
+  <div
+    style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+    <p style=" font-size: 24px;">Bạn có chắc chắn muốn rời khỏi video <span>${timeseri}</span>?</p>
+    <button id="confirmButton" style="background-color: #f87208;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 18px;
+        color: white;">Xác nhận</button>
+    <button id="cancelButton" style="background-color: #04f64a;
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 18px;
+        color: white;">Hủy</button>
 
+  </div>
 </body>
 <script>
-    chrome.webRequest.onBeforeRequest.addListener(
-        function (request) {
-      
-          chrome.identity.getProfileUserInfo(function (profileUserInfo) {
-            console.log(profileUserInfo.email);
-      
-            return { redirectUrl: `https://example.com` };
-          });
-        },
-       
-      )
+  <!-- chrome.webRequest.onBeforeRequest.addListener(
+      function (request) {
+    
+        chrome.identity.getProfileUserInfo(function (profileUserInfo) {
+          console.log(profileUserInfo.email);
+    
+          return { redirectUrl: `https://example.com` };
+        });
+      },
+     
+    ) -->
 </script>
 
 </html>

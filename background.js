@@ -10,6 +10,7 @@
  let previousTabId = null;
    
   let previousTabUrl =null
+  let youtubeTabId = null;
 function isYouTubeUrl(url) {
     return url.includes('youtube.com/watch');
   }
@@ -27,11 +28,11 @@ function isYouTubeUrl(url) {
       console.log('YouTube tab detected:', tabId);
       console.log('YouTube tab detected changeInfo:', changeInfo);
   if (isYouTubeUrl(tab.url)){
-
+    
     chrome.tabs.sendMessage(tabId, {
       type: "NEW",
-      videoId: activeTab.url
-      
+      videoId: activeTab.url,
+      tabId:tabId
     });
   }
     }
@@ -45,19 +46,21 @@ function isYouTubeUrl(url) {
        
         console.log("Tab ID or URL has changed!");
           if(!isYouTubeUrl(tab.url)){
-
+            
             chrome.tabs.sendMessage(previousTabId, {
               type: "NEW TAB",
-              videoId:tab.url
+              videoId:tab.url,
               
+              tabId:tab.id
             });
-          }        
+          }       
       }
       console.log("previousTabUrl is :", previousTabUrl);
    
       previousTabId = activeInfo.tabId;
       previousTabUrl = tab.url; 
       console.log("Activated tab URL:", tab.url);
+      console.log("Activated tab ID :", previousTabId);
     } )   
   });
 
@@ -65,4 +68,4 @@ function isYouTubeUrl(url) {
 
  
 chrome.tabs.onUpdated.addListener(handleTabUpdate);
-
+// chrome.tabs.update(1283789847, { active: true });
