@@ -6,12 +6,13 @@
     "permissions": ["storage", "tabs", "activeTab"],
     "host_permissions": ["https://*/*"],
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "background.js",
+      "type": "module"
     },
     "content_scripts": [
       {
         "matches": ["https://*/*"],
-        "js": ["scripts/content-script.js"]
+        "js": ["content.js"]
       }
     ],
    
